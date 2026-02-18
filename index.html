@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ShiftTrack — Daily Work Timer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0d14;
+    --surface: #111620;
+    --surface2: #171d2b;
+    --border: #1e2738;
+    --accent: #00e5ff;
+    --accent2: #ff4d6d;
+    --accent3: #7bed9f;
+    --warn: #ffd32a;
+    --text: #e8eaf2;
+    --muted: #5a6480;
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container { max-width: 940px; margin: 0 auto; padding: 0 20px 60px; position: relative; z-index: 1; }
+
+  /* ── Header ── */
+  header {
+    padding: 36px 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent), #005f75);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 22px;
+  }
+  .brand h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px; }
+  .brand span { color: var(--accent); }
+  .subtitle { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+  /* Shift clock */
+  .shift-clock {
+    text-align: right;
+  }
+  .clock-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .clock-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── Shift Timer ── */
+  .shift-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .shift-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .shift-left { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .shift-label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+  .countdown {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .countdown.ok { color: var(--accent3); }
+  .countdown.warn { color: var(--warn); }
+  .countdown.over { color: var(--accent2); }
+
+  .shift-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-val { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--text); }
+  .stat-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  .shift-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn-secondary:hover { background: rgba(0,229,255,0.08); }
+  .btn-danger { background: transparent; color: var(--accent2); border: 1px solid var(--accent2); }
+  .btn-danger:hover { background: rgba(255,77,109,0.08); }
+  .btn-success { background: var(--accent3); color: #000; }
+  .btn-success:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+  /* Start time row */
+  .start-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .start-row label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .time-input {
+    font-family: 'Space Mono', monospace;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 12px;
+    outline: none;
+    width: 120px;
+  }
+  .time-input:focus { border-color: var(--accent); }
+
+  /* ── Progress bar ── */
+  .progress-section { margin-bottom: 24px; }
+  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-title { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .progress-pct { font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 700; }
+
+  .progress-track {
+    height: 12px;
+    background: var(--surface);
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+  .progress-fill.ok { background: linear-gradient(90deg, #005f4a, var(--accent3)); }
+  .progress-fill.warn { background: linear-gradient(90deg, #7a5500, var(--warn)); }
+  .progress-fill.over { background: linear-gradient(90deg, #7a0020, var(--accent2)); }
+
+  /* ── Task Grid ── */
+  .section-title {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .task-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .task-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .task-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 3px 0 0 3px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .task-card:hover::before { opacity: 1; }
+
+  .task-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .task-name { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
+  .task-rate {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    background: rgba(0,229,255,0.1);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .task-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .task-count-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+
+  .counter-widget { display: flex; align-items: center; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .counter-btn {
+    background: var(--surface2);
+    border: none;
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 34px; height: 34px;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .counter-btn:hover { background: rgba(0,229,255,0.12); }
+  .counter-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    width: 48px;
+    text-align: center;
+    background: var(--surface2);
+    border: none;
+    outline: none;
+    padding: 4px 0;
+    cursor: text;
+  }
+  .counter-num:focus { background: rgba(0,229,255,0.05); color: var(--accent); }
+  /* hide number input arrows */
+  .counter-num::-webkit-outer-spin-button,
+  .counter-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .counter-num[type=number] { -moz-appearance: textfield; }
+
+  .task-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .task-mins { font-family: 'Space Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent3); }
+  .task-hrs { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); }
+  .task-bar { height: 3px; background: var(--border); border-radius: 99px; margin-top: 10px; overflow: hidden; }
+  .task-bar-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.4s ease; }
+
+  /* ── Summary Panel ── */
+  .summary-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 24px;
+  }
+  .sum-item { text-align: center; }
+  .sum-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .sum-val.green { color: var(--accent3); }
+  .sum-val.yellow { color: var(--warn); }
+  .sum-val.red { color: var(--accent2); }
+  .sum-val.blue { color: var(--accent); }
+  .sum-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; }
+
+  /* ── History ── */
+  .history-section { }
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+  .history-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+  }
+  .history-date { color: var(--muted); }
+  .history-tasks { display: flex; gap: 12px; flex-wrap: wrap; }
+  .history-tag {
+    background: rgba(0,229,255,0.08);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+  }
+  .history-total { color: var(--accent3); font-weight: 700; }
+  .history-del {
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 1rem; line-height: 1;
+    transition: color 0.15s;
+  }
+  .history-del:hover { color: var(--accent2); }
+  .empty-history { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; font-family: 'Space Mono', monospace; }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .status-ok { background: rgba(123,237,159,0.12); color: var(--accent3); border: 1px solid rgba(123,237,159,0.25); }
+  .status-warn { background: rgba(255,211,42,0.12); color: var(--warn); border: 1px solid rgba(255,211,42,0.25); }
+  .status-over { background: rgba(255,77,109,0.12); color: var(--accent2); border: 1px solid rgba(255,77,109,0.25); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--surface);
+    border: 1px solid var(--accent3);
+    color: var(--accent3);
+    border-radius: 10px;
+    padding: 14px 22px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 600px) {
+    .clock-time { font-size: 1.4rem; }
+    .countdown { font-size: 1.8rem; }
+    .shift-stats { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⏱</div>
+      <div>
+        <h1>Shift<span>Track</span></h1>
+        <div class="subtitle">Daily Work Time Monitor</div>
+      </div>
+    </div>
+    <div class="shift-clock">
+      <div class="clock-time" id="liveClock">--:--:--</div>
+      <div class="clock-label">Current Time</div>
+    </div>
+  </header>
+
+  <!-- Shift Timer Panel -->
+  <div class="shift-panel">
+    <div class="shift-left">
+      <div>
+        <div class="shift-label">Shift Countdown</div>
+        <div class="countdown ok" id="countdown">7:00:00</div>
+      </div>
+      <div class="shift-stats">
+        <div class="stat">
+          <div class="stat-val" id="statElapsed">0m</div>
+          <div class="stat-lbl">Elapsed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="statRemain">420m</div>
+          <div class="stat-lbl">Remaining</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="statPct">0%</div>
+          <div class="stat-lbl">Used</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="start-row" style="margin-bottom:12px">
+        <label>Shift Start:</label>
+        <input type="time" class="time-input" id="shiftStart" value="09:00"/>
+      </div>
+      <div class="shift-actions">
+        <button class="btn btn-primary" id="btnStart" onclick="startShift()">▶ Start Shift</button>
+        <button class="btn btn-danger" id="btnReset" onclick="resetShift()" style="display:none">↺ Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Progress -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <div class="progress-title">Task Load vs Shift Capacity (420 mins)</div>
+      <div class="progress-pct" id="taskPct" style="color:var(--accent3)">0%</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill ok" id="taskProgress" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-panel">
+    <div class="sum-item">
+      <div class="sum-val blue" id="sumTasks">0</div>
+      <div class="sum-lbl">Total Tasks</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-val blue" id="sumMins">0</div>
+      <div class="sum-lbl">Total Mins</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-val blue" id="sumHrs">0.00</div>
+      <div class="sum-lbl">Total Hours</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-val green" id="sumFree">420</div>
+      <div class="sum-lbl">Mins Free</div>
+    </div>
+    <div class="sum-item">
+      <div id="sumStatus" class="status-badge status-ok">✅ On Track</div>
+      <div class="sum-lbl" style="margin-top:10px">Status</div>
+    </div>
+  </div>
+
+  <!-- Tasks -->
+  <div class="section-title">Task Breakdown</div>
+  <div class="task-grid" id="taskGrid"></div>
+
+  <!-- Export row -->
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px">
+    <button class="btn btn-success" onclick="saveToday()">💾 Save Today's Record</button>
+    <button class="btn btn-secondary" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn btn-secondary" onclick="resetTasks()">✕ Clear Counts</button>
+  </div>
+
+  <!-- History -->
+  <div class="section-title">Saved Records</div>
+  <div class="history-list" id="historyList"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────
+const TASKS = [
+  { id: 'email',      name: 'Email Follow-Up',   mins: 4  },
+  { id: 'bms',        name: 'BMS Follow-Up',      mins: 3  },
+  { id: 'indexing',   name: 'Indexing',            mins: 3  },
+  { id: 'processing', name: 'Processing',          mins: 5  },
+  { id: 'reccomp',    name: 'Rec Comp',            mins: 5  },
+  { id: 'inspection', name: 'Inspection Review',   mins: 18 },
+];
+const SHIFT_MINS = 420;
+const SHIFT_SECS = SHIFT_MINS * 60;
+
+// ── State ─────────────────────────────────────────────────────────────────
+let counts = {};
+TASKS.forEach(t => counts[t.id] = 0);
+let shiftTimer = null;
+let shiftRunning = false;
+let shiftEndTime = null;
+
+// ── Build Task Cards ───────────────────────────────────────────────────────
+function buildCards() {
+  const grid = document.getElementById('taskGrid');
+  grid.innerHTML = '';
+  TASKS.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'task-card';
+    card.innerHTML = `
+      <div class="task-top">
+        <div class="task-name">${t.name}</div>
+        <div class="task-rate">${t.mins} min/task</div>
+      </div>
+      <div class="task-input-row">
+        <div class="task-count-label">Tasks:</div>
+        <div class="counter-widget">
+          <button class="counter-btn" onclick="adjust('${t.id}',-1)">−</button>
+          <input type="number" class="counter-num" id="inp_${t.id}" value="0" min="0" max="999"
+            oninput="onInput('${t.id}',this.value)" />
+          <button class="counter-btn" onclick="adjust('${t.id}',1)">+</button>
+        </div>
+      </div>
+      <div class="task-result">
+        <div>
+          <div class="task-mins" id="res_mins_${t.id}">0 mins</div>
+          <div class="task-hrs" id="res_hrs_${t.id}">0.00 hrs</div>
+        </div>
+        <div style="text-align:right; font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted)">
+          Max/shift: <span style="color:var(--text)">${Math.floor(SHIFT_MINS/t.mins)}</span>
+        </div>
+      </div>
+      <div class="task-bar"><div class="task-bar-fill" id="bar_${t.id}" style="width:0%"></div></div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── Adjust count ─────────────────────────────────────────────────────────
+function adjust(id, delta) {
+  counts[id] = Math.max(0, (counts[id] || 0) + delta);
+  document.getElementById('inp_' + id).value = counts[id];
+  recalc();
+}
+function onInput(id, val) {
+  counts[id] = Math.max(0, parseInt(val) || 0);
+  recalc();
+}
+
+// ── Recalculate ───────────────────────────────────────────────────────────
+function recalc() {
+  let totalMins = 0, totalTasks = 0;
+  TASKS.forEach(t => {
+    const c = counts[t.id] || 0;
+    const m = c * t.mins;
+    totalMins += m;
+    totalTasks += c;
+    document.getElementById('res_mins_' + t.id).textContent = m + ' mins';
+    document.getElementById('res_hrs_' + t.id).textContent = (m/60).toFixed(2) + ' hrs';
+    const pct = Math.min(100, (m / SHIFT_MINS) * 100);
+    document.getElementById('bar_' + t.id).style.width = pct + '%';
+  });
+
+  const free = SHIFT_MINS - totalMins;
+  const pct = (totalMins / SHIFT_MINS) * 100;
+
+  // Summary
+  document.getElementById('sumTasks').textContent = totalTasks;
+  document.getElementById('sumMins').textContent = totalMins;
+  document.getElementById('sumHrs').textContent = (totalMins/60).toFixed(2);
+  document.getElementById('sumFree').textContent = Math.max(0, free);
+
+  // Colour free
+  const freeEl = document.getElementById('sumFree');
+  freeEl.className = 'sum-val ' + (free < 0 ? 'red' : free < 60 ? 'yellow' : 'green');
+
+  // Progress
+  const prog = document.getElementById('taskProgress');
+  const pctEl = document.getElementById('taskPct');
+  const clampPct = Math.min(100, pct);
+  prog.style.width = clampPct + '%';
+  prog.className = 'progress-fill ' + (pct > 100 ? 'over' : pct > 85 ? 'warn' : 'ok');
+  pctEl.textContent = pct.toFixed(1) + '%';
+  pctEl.style.color = pct > 100 ? 'var(--accent2)' : pct > 85 ? 'var(--warn)' : 'var(--accent3)';
+
+  // Status
+  const sb = document.getElementById('sumStatus');
+  if (pct > 100) { sb.className = 'status-badge status-over'; sb.textContent = '🔴 Exceeds Shift'; }
+  else if (pct > 85) { sb.className = 'status-badge status-warn'; sb.textContent = '⚠ Near Limit'; }
+  else { sb.className = 'status-badge status-ok'; sb.textContent = '✅ On Track'; }
+}
+
+// ── Shift Timer ────────────────────────────────────────────────────────────
+function startShift() {
+  if (shiftRunning) return;
+  const val = document.getElementById('shiftStart').value || '09:00';
+  const [h, m] = val.split(':').map(Number);
+  const now = new Date();
+  const start = new Date(now);
+  start.setHours(h, m, 0, 0);
+  shiftEndTime = new Date(start.getTime() + SHIFT_SECS * 1000);
+  shiftRunning = true;
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('btnReset').style.display = '';
+  document.getElementById('shiftStart').disabled = true;
+  tickShift();
+  shiftTimer = setInterval(tickShift, 1000);
+  showToast('Shift started! ▶');
+}
+
+function tickShift() {
+  const now = new Date();
+  const remaining = Math.max(0, Math.round((shiftEndTime - now) / 1000));
+  const elapsed = SHIFT_SECS - remaining;
+
+  const rh = Math.floor(remaining / 3600);
+  const rm = Math.floor((remaining % 3600) / 60);
+  const rs = remaining % 60;
+  const fmt = n => String(n).padStart(2,'0');
+
+  const cd = document.getElementById('countdown');
+  cd.textContent = `${fmt(rh)}:${fmt(rm)}:${fmt(rs)}`;
+  const pct = elapsed / SHIFT_SECS;
+  cd.className = 'countdown ' + (remaining === 0 ? 'over' : pct > 0.85 ? 'warn' : 'ok');
+
+  document.getElementById('statElapsed').textContent = Math.round(elapsed/60) + 'm';
+  document.getElementById('statRemain').textContent = Math.round(remaining/60) + 'm';
+  document.getElementById('statPct').textContent = (pct*100).toFixed(0) + '%';
+
+  if (remaining === 0) {
+    clearInterval(shiftTimer);
+    showToast('⏰ Shift complete!');
+  }
+}
+
+function resetShift() {
+  clearInterval(shiftTimer);
+  shiftRunning = false;
+  shiftEndTime = null;
+  document.getElementById('countdown').textContent = '7:00:00';
+  document.getElementById('countdown').className = 'countdown ok';
+  document.getElementById('statElapsed').textContent = '0m';
+  document.getElementById('statRemain').textContent = '420m';
+  document.getElementById('statPct').textContent = '0%';
+  document.getElementById('btnStart').style.display = '';
+  document.getElementById('btnReset').style.display = 'none';
+  document.getElementById('shiftStart').disabled = false;
+}
+
+// ── Live clock ────────────────────────────────────────────────────────────
+function tickClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('liveClock').textContent = `${h}:${m}:${s}`;
+}
+setInterval(tickClock, 1000);
+tickClock();
+
+// ── Save/Export ───────────────────────────────────────────────────────────
+function saveToday() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+  const timeStr = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  let totalMins = 0, totalTasks = 0;
+  const taskSnap = {};
+  TASKS.forEach(t => { taskSnap[t.id] = counts[t.id]; totalTasks += counts[t.id]; totalMins += counts[t.id] * t.mins; });
+
+  const record = { date: dateStr, time: timeStr, counts: taskSnap, totalTasks, totalMins };
+  const history = getHistory();
+  history.unshift(record);
+  localStorage.setItem('shifttrack_history', JSON.stringify(history.slice(0,30)));
+  renderHistory();
+  showToast('✅ Record saved!');
+}
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('shifttrack_history') || '[]'); } catch { return []; }
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const history = getHistory();
+  if (!history.length) {
+    list.innerHTML = '<div class="empty-history">No records yet — save today\'s shift to start tracking.</div>';
+    return;
+  }
+  list.innerHTML = history.map((r,i) => `
+    <div class="history-item">
+      <div class="history-date">${r.date} · ${r.time}</div>
+      <div class="history-tasks">
+        ${TASKS.filter(t => (r.counts[t.id]||0)>0).map(t =>
+          `<span class="history-tag">${t.name.split(' ')[0]}: ${r.counts[t.id]}</span>`
+        ).join('')}
+      </div>
+      <div class="history-total">${r.totalMins}m · ${r.totalTasks} tasks</div>
+      <button class="history-del" onclick="deleteRecord(${i})" title="Delete">✕</button>
+    </div>
+  `).join('');
+}
+
+function deleteRecord(i) {
+  const h = getHistory();
+  h.splice(i,1);
+  localStorage.setItem('shifttrack_history', JSON.stringify(h));
+  renderHistory();
+}
+
+function exportCSV() {
+  const history = getHistory();
+  if (!history.length) { showToast('No records to export yet.'); return; }
+  let csv = 'Date,Time,' + TASKS.map(t=>t.name).join(',') + ',Total Tasks,Total Mins,Total Hours\n';
+  history.forEach(r => {
+    csv += `"${r.date}","${r.time}",` +
+      TASKS.map(t => r.counts[t.id]||0).join(',') +
+      `,${r.totalTasks},${r.totalMins},${(r.totalMins/60).toFixed(2)}\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'ShiftTrack_Records.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇ CSV downloaded!');
+}
+
+function resetTasks() {
+  TASKS.forEach(t => { counts[t.id] = 0; document.getElementById('inp_'+t.id).value = 0; });
+  recalc();
+  showToast('Counts cleared.');
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+buildCards();
+recalc();
+renderHistory();
+</script>
+</body>
+</html>
