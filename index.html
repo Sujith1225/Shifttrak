@@ -556,6 +556,15 @@ function buildCards() {
   });
 }
 
+// ── Format mins → "Xhr Ymin" ──────────────────────────────────────────────
+function fmtHrMin(totalMins) {
+  const h = Math.floor(totalMins / 60);
+  const m = totalMins % 60;
+  if (h === 0) return `0hr ${m}min`;
+  if (m === 0) return `${h}hr 0min`;
+  return `${h}hr ${m}min`;
+}
+
 // ── Adjust count ─────────────────────────────────────────────────────────
 function adjust(id, delta) {
   counts[id] = Math.max(0, (counts[id] || 0) + delta);
@@ -576,7 +585,7 @@ function recalc() {
     totalMins += m;
     totalTasks += c;
     document.getElementById('res_mins_' + t.id).textContent = m + ' mins';
-    document.getElementById('res_hrs_' + t.id).textContent = (m/60).toFixed(2) + ' hrs';
+    document.getElementById('res_hrs_' + t.id).textContent = fmtHrMin(m);
     const pct = Math.min(100, (m / SHIFT_MINS) * 100);
     document.getElementById('bar_' + t.id).style.width = pct + '%';
   });
@@ -587,7 +596,7 @@ function recalc() {
   // Summary
   document.getElementById('sumTasks').textContent = totalTasks;
   document.getElementById('sumMins').textContent = totalMins;
-  document.getElementById('sumHrs').textContent = (totalMins/60).toFixed(2);
+  document.getElementById('sumHrs').textContent = fmtHrMin(totalMins);
   document.getElementById('sumFree').textContent = Math.max(0, free);
 
   // Colour free
