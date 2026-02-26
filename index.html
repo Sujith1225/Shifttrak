@@ -129,6 +129,11 @@
   .auto-icon { font-size: 0.9rem; color: var(--accent); }
   .auto-num { background: transparent; color: var(--accent); font-weight: 700; cursor: default; width: 40px; }
   .auto-tag { font-size: 0.6rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+  .auto-widget-editable { border-color: #c7d2fe; background: var(--accent-light); margin-bottom: 6px; }
+  .auto-reset-row { display: flex; align-items: center; justify-content: space-between; }
+  .auto-calc-info { font-size: 0.65rem; font-weight: 600; color: var(--accent); }
+  .auto-reset-btn { font-size: 0.62rem; font-weight: 600; background: transparent; border: 1px solid #c7d2fe; color: var(--accent); border-radius: 6px; padding: 3px 10px; cursor: pointer; transition: all 0.15s; }
+  .auto-reset-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   /* Actions */
   .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
@@ -293,10 +298,16 @@ function buildCards() {
     const card = document.createElement('div');
     card.className = 'task-card' + (isAuto ? ' auto-card' : '');
     const inputBlock = isAuto
-      ? `<div class="counter-widget auto-widget">
-           <span class="auto-icon">⚙</span>
-           <input type="number" class="counter-num auto-num" id="inp_${t.id}" value="0" readonly/>
-           <span class="auto-tag">auto</span>
+      ? `<div style="width:100%">
+           <div class="counter-widget auto-widget-editable">
+             <button class="counter-btn" onclick="adjustInspection(-1)">−</button>
+             <input type="number" class="counter-num" id="inp_${t.id}" value="0" min="0" max="999" oninput="onInspectionInput(this.value)"/>
+             <button class="counter-btn" onclick="adjustInspection(1)">+</button>
+           </div>
+           <div class="auto-reset-row">
+             <span class="auto-calc-info" id="autoCalcInfo">⚙ Auto: 0 tasks</span>
+             <button class="auto-reset-btn" onclick="resetInspectionToAuto()" title="Reset to auto-calculated value">↺ Reset to Auto</button>
+           </div>
          </div>`
       : `<div class="counter-widget">
            <button class="counter-btn" onclick="adjust('${t.id}',-1)">−</button>
@@ -332,6 +343,28 @@ function fmtHrMin(m) { return `${Math.floor(m/60)}hr ${m%60}min`; }
 function adjust(id, delta) { counts[id] = Math.max(0,(counts[id]||0)+delta); document.getElementById('inp_'+id).value=counts[id]; recalc(); }
 function onInput(id, val) { counts[id] = Math.max(0,parseInt(val)||0); recalc(); }
 
+function adjustInspection(delta) {
+  inspManualOverride = true;
+  counts['inspection'] = Math.max(0, (counts['inspection'] || 0) + delta);
+  document.getElementById('inp_inspection').value = counts['inspection'];
+  recalc();
+}
+
+function onInspectionInput(val) {
+  inspManualOverride = true;
+  counts['inspection'] = Math.max(0, parseInt(val) || 0);
+  recalc();
+}
+
+function resetInspectionToAuto() {
+  inspManualOverride = false;
+  recalc();
+}
+
+// Track auto value and whether user has manually overridden
+let inspAutoValue = 0;
+let inspManualOverride = false;
+
 function recalc() {
   // Calculate mins used by the 5 manual tasks (exclude inspection)
   let manualMins = 0, manualTasks = 0;
@@ -344,9 +377,22 @@ function recalc() {
   // Auto-calculate Inspection Review count from remaining time
   const inspTask = TASKS.find(t => t.id === 'inspection');
   const remainingMins = Math.max(0, SHIFT_MINS - manualMins);
-  const autoInspCount = Math.floor(remainingMins / inspTask.mins);
-  counts['inspection'] = autoInspCount;
-  document.getElementById('inp_inspection').value = autoInspCount;
+  inspAutoValue = Math.floor(remainingMins / inspTask.mins);
+
+  // Only auto-set if user hasn't manually overridden
+  if (!inspManualOverride) {
+    counts['inspection'] = inspAutoValue;
+    document.getElementById('inp_inspection').value = inspAutoValue;
+  }
+
+  // Update the auto-info label
+  const infoEl = document.getElementById('autoCalcInfo');
+  if (infoEl) {
+    infoEl.textContent = inspManualOverride
+      ? `⚙ Auto: ${inspAutoValue} tasks (overridden)`
+      : `⚙ Auto: ${inspAutoValue} tasks`;
+    infoEl.style.color = inspManualOverride ? 'var(--warn)' : 'var(--accent)';
+  }
 
   // Now compute totals including auto inspection
   let totalMins = 0, totalTasks = 0;
