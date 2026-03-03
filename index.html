@@ -122,6 +122,7 @@
   .counter-btn{background:var(--surface2);border:none;color:var(--accent);font-size:1rem;font-weight:700;width:32px;height:32px;cursor:pointer;transition:background 0.15s;display:grid;place-items:center;flex-shrink:0;}
   .counter-btn:hover{background:var(--accent-light);}
   .counter-num{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--text);width:46px;text-align:center;background:#fff;border:none;outline:none;padding:4px 0;}
+  .counter-num::placeholder{color:var(--muted);font-weight:400;font-size:0.9rem;}
   .counter-num::-webkit-outer-spin-button,.counter-num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   .counter-num[type=number]{-moz-appearance:textfield;}
 
@@ -288,14 +289,6 @@
         <div class="style-option-check" id="chk-pm">✓</div>
       </div>
 
-      <div class="style-option" id="opt-plain" onclick="setInputStyle('plain')">
-        <div class="style-option-icon">🔢</div>
-        <div class="style-option-info">
-          <div class="style-option-name">Plain Number Input</div>
-          <div class="style-option-desc">Just type the number directly. Fast and clean.</div>
-        </div>
-        <div class="style-option-check" id="chk-plain"></div>
-      </div>
 
       <div class="style-option" id="opt-slider" onclick="setInputStyle('slider')">
         <div class="style-option-icon">🎚️</div>
@@ -306,23 +299,7 @@
         <div class="style-option-check" id="chk-slider"></div>
       </div>
 
-      <div class="style-option" id="opt-dropdown" onclick="setInputStyle('dropdown')">
-        <div class="style-option-icon">🔽</div>
-        <div class="style-option-info">
-          <div class="style-option-name">Dropdown</div>
-          <div class="style-option-desc">Pick from a list. No accidental wrong values.</div>
-        </div>
-        <div class="style-option-check" id="chk-dropdown"></div>
-      </div>
 
-      <div class="style-option" id="opt-tap" onclick="setInputStyle('tap')">
-        <div class="style-option-icon">⭕</div>
-        <div class="style-option-info">
-          <div class="style-option-name">Tap to Increment</div>
-          <div class="style-option-desc">Tap the card to add 1. Reset button to clear.</div>
-        </div>
-        <div class="style-option-check" id="chk-tap"></div>
-      </div>
     </div>
 
     <div class="settings-section">
@@ -418,6 +395,7 @@ function resetDurations() {
 
 // ── Load saved input style ────────────────────────────────────────────────
 let inputStyle = localStorage.getItem('st_inputStyle') || 'pm';
+if (!['pm','slider'].includes(inputStyle)) inputStyle = 'pm';
 
 // ── Settings panel ────────────────────────────────────────────────────────
 function openSettings() {
@@ -433,7 +411,7 @@ function setInputStyle(style) {
   inputStyle = style;
   localStorage.setItem('st_inputStyle', style);
   // Update checkmarks
-  ['pm','plain','slider','dropdown','tap'].forEach(s => {
+  ['pm','slider'].forEach(s => {
     document.getElementById('opt-' + s).classList.toggle('active', s === style);
     document.getElementById('chk-' + s).textContent = s === style ? '✓' : '';
   });
@@ -451,7 +429,7 @@ function buildInput(t) {
   if (inputStyle === 'pm') return `
     <div class="counter-widget">
       <button class="counter-btn" onclick="setCount('${t.id}', (counts['${t.id}']||0)-1)">−</button>
-      <input type="number" class="counter-num" id="${id}" value="${val}" min="0" max="${max}" oninput="setCount('${t.id}',+this.value)"/>
+      <input type="number" class="counter-num" id="${id}" value="${val||''}" placeholder="—" min="0" max="${max}" oninput="setCount('${t.id}',+this.value)"/>
       <button class="counter-btn" onclick="setCount('${t.id}', (counts['${t.id}']||0)+1)">+</button>
     </div>`;
 
@@ -539,8 +517,7 @@ function buildCards() {
 function setCount(id, val) {
   counts[id] = Math.max(0, Math.floor(+val) || 0);
   const inp = document.getElementById('inp_' + id);
-  if (inp) inp.value = counts[id];
-  // update tap display if tap style
+  if (inp) inp.value = counts[id] === 0 ? '' : counts[id];
   const tapDisplay = document.getElementById('inp_' + id + '_display');
   if (tapDisplay) tapDisplay.textContent = counts[id];
   recalc();
