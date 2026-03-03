@@ -7,186 +7,207 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   :root {
-    --bg: #f1f5f9;
-    --surface: #ffffff;
-    --surface2: #f8fafc;
-    --border: #e2e8f0;
-    --border2: #cbd5e1;
-    --accent: #6366f1;
-    --accent-light: #eef2ff;
-    --accent2: #ef4444;
-    --accent2-light: #fef2f2;
-    --accent3: #10b981;
-    --accent3-light: #ecfdf5;
-    --warn: #f59e0b;
-    --warn-light: #fffbeb;
-    --text: #0f172a;
-    --text2: #334155;
-    --muted: #94a3b8;
-    --radius: 12px;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow: 0 4px 16px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
-    --shadow-lg: 0 10px 40px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05);
+    --bg:#f1f5f9; --surface:#fff; --surface2:#f8fafc; --border:#e2e8f0; --border2:#cbd5e1;
+    --accent:#6366f1; --accent-light:#eef2ff; --accent2:#ef4444; --accent2-light:#fef2f2;
+    --accent3:#10b981; --accent3-light:#ecfdf5; --warn:#f59e0b; --warn-light:#fffbeb;
+    --text:#0f172a; --text2:#334155; --muted:#94a3b8; --radius:12px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+    --shadow:0 4px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.05);
+    --shadow-lg:0 10px 40px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.05);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-  .container { max-width: 960px; margin: 0 auto; padding: 0 20px 120px; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px;}
 
-  /* Header */
-  header { padding: 28px 0 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
-  .brand { display: flex; align-items: center; gap: 12px; }
-  .brand-icon { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: grid; place-items: center; font-size: 20px; box-shadow: 0 2px 8px rgba(99,102,241,0.3); }
-  .brand h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
-  .brand h1 span { color: var(--accent); }
-  .subtitle { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
-  .shift-clock { text-align: right; }
-  .clock-time { font-family: 'Space Mono', monospace; font-size: 1.7rem; font-weight: 700; color: var(--text); letter-spacing: 1px; line-height: 1; }
-  .clock-label { font-size: 0.6rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+  /* ── Header ── */
+  header{padding:22px 0 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-bottom:1px solid var(--border);margin-bottom:24px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-icon{width:40px;height:40px;background:var(--accent);border-radius:10px;display:grid;place-items:center;font-size:20px;box-shadow:0 2px 8px rgba(99,102,241,0.3);}
+  .brand h1{font-size:1.4rem;font-weight:700;letter-spacing:-0.5px;}
+  .brand h1 span{color:var(--accent);}
+  .subtitle{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+  .header-right{display:flex;align-items:center;gap:12px;}
+  .clock-time{font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--text);letter-spacing:1px;}
+  .clock-label{font-size:0.58rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;text-align:right;}
 
-  /* Shift Panel */
-  .shift-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm); }
-  .shift-left { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
-  .shift-stats { display: flex; gap: 24px; flex-wrap: wrap; }
-  .stat { text-align: center; }
-  .stat-val { font-family: 'Space Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--text); }
-  .stat-lbl { font-size: 0.58rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; font-weight: 500; }
-  .shift-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  .start-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-  .start-row label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-  .time-input { font-family: 'Space Mono', monospace; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; padding: 6px 12px; outline: none; width: 110px; transition: border-color 0.15s; }
-  .time-input:focus { border-color: var(--accent); }
+  /* ── Settings Gear Button ── */
+  .settings-btn{width:38px;height:38px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;font-size:1.1rem;transition:all 0.15s;flex-shrink:0;}
+  .settings-btn:hover{background:var(--accent-light);border-color:var(--accent);transform:rotate(30deg);}
 
-  /* Buttons */
-  .btn { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.3px; border: none; border-radius: 8px; padding: 9px 18px; cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 6px; }
-  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(99,102,241,0.25); }
-  .btn-primary:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.35); }
-  .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
-  .btn-secondary:hover { background: var(--border); }
-  .btn-danger { background: var(--accent2-light); color: var(--accent2); border: 1px solid #fecaca; }
-  .btn-danger:hover { background: #fee2e2; }
-  .btn-success { background: var(--accent3); color: #fff; box-shadow: 0 2px 8px rgba(16,185,129,0.25); }
-  .btn-success:hover { background: #059669; transform: translateY(-1px); }
+  /* ── Settings Drawer (slide in from right) ── */
+  .settings-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.3);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+  .settings-overlay.open{opacity:1;pointer-events:all;}
+  .settings-drawer{position:fixed;top:0;right:-380px;width:360px;max-width:95vw;height:100vh;background:var(--surface);box-shadow:var(--shadow-lg);z-index:201;transition:right 0.3s cubic-bezier(0.34,1.1,0.64,1);display:flex;flex-direction:column;overflow:hidden;}
+  .settings-drawer.open{right:0;}
+  .settings-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .settings-title{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .settings-close{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;font-size:1rem;transition:all 0.15s;}
+  .settings-close:hover{background:var(--accent2-light);border-color:#fecaca;color:var(--accent2);}
+  .settings-body{padding:20px;overflow-y:auto;flex:1;}
+  .settings-section{margin-bottom:24px;}
+  .settings-section-title{font-size:0.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 
-  /* Progress */
-  .progress-section { margin-bottom: 20px; }
-  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .progress-title { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  .progress-pct { font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; }
-  .progress-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; border-radius: 99px; transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1), background 0.3s; }
-  .progress-fill.ok   { background: linear-gradient(90deg, #6366f1, #818cf8); }
-  .progress-fill.warn { background: linear-gradient(90deg, #d97706, #f59e0b); }
-  .progress-fill.over { background: linear-gradient(90deg, #dc2626, #ef4444); }
+  /* Input Style Options */
+  .style-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:8px;transition:all 0.15s;}
+  .style-option:hover{border-color:var(--border2);background:var(--surface2);}
+  .style-option.active{border-color:var(--accent);background:var(--accent-light);}
+  .style-option-icon{font-size:1.3rem;flex-shrink:0;width:32px;text-align:center;}
+  .style-option-info{flex:1;}
+  .style-option-name{font-size:0.85rem;font-weight:600;color:var(--text);}
+  .style-option-desc{font-size:0.68rem;color:var(--muted);margin-top:2px;}
+  .style-option-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:grid;place-items:center;flex-shrink:0;transition:all 0.15s;}
+  .style-option.active .style-option-check{background:var(--accent);border-color:var(--accent);color:#fff;font-size:0.7rem;}
 
-  /* Summary */
-  .summary-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 20px; box-shadow: var(--shadow-sm); }
-  .sum-item { text-align: center; }
-  .sum-val { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; line-height: 1; color: var(--text); }
-  .sum-val.green { color: var(--accent3); }
-  .sum-val.yellow { color: var(--warn); }
-  .sum-val.red { color: var(--accent2); }
-  .sum-val.blue { color: var(--accent); }
-  .sum-lbl { font-size: 0.6rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; font-weight: 500; }
-  .status-badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 99px; padding: 5px 12px; font-size: 0.72rem; font-weight: 600; }
-  .status-ok   { background: var(--accent3-light); color: var(--accent3); border: 1px solid #a7f3d0; }
-  .status-warn { background: var(--warn-light); color: var(--warn); border: 1px solid #fde68a; }
-  .status-over { background: var(--accent2-light); color: var(--accent2); border: 1px solid #fecaca; }
+  /* Settings Info box */
+  .settings-info{background:var(--accent-light);border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;font-size:0.72rem;color:var(--text2);line-height:1.5;}
+  .settings-info strong{color:var(--accent);}
 
-  /* Section title */
-  .section-title { font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  /* ── Buttons ── */
+  .btn{font-family:'Inter',sans-serif;font-weight:600;font-size:0.78rem;border:none;border-radius:8px;padding:9px 18px;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(99,102,241,0.25);}
+  .btn-primary:hover{background:#4f46e5;transform:translateY(-1px);}
+  .btn-secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+  .btn-secondary:hover{background:var(--border);}
+  .btn-danger{background:var(--accent2-light);color:var(--accent2);border:1px solid #fecaca;}
+  .btn-danger:hover{background:#fee2e2;}
+  .btn-success{background:var(--accent3);color:#fff;box-shadow:0 2px 8px rgba(16,185,129,0.25);}
+  .btn-success:hover{background:#059669;transform:translateY(-1px);}
 
-  /* Task Grid */
-  .task-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s; position: relative; }
-  .task-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); border-color: var(--border2); }
-  .task-card::before { content: ''; position: absolute; top: 0; left: 16px; right: 16px; height: 2px; background: var(--accent); border-radius: 0 0 3px 3px; opacity: 0; transition: opacity 0.2s; }
-  .task-card:hover::before { opacity: 1; }
-  .task-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .task-name { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-  .task-rate { font-family: 'Space Mono', monospace; font-size: 0.65rem; background: var(--accent-light); color: var(--accent); border-radius: 6px; padding: 3px 8px; font-weight: 700; flex-shrink: 0; }
-  .task-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .task-count-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; white-space: nowrap; }
-  .counter-widget { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
-  .counter-btn { background: var(--surface2); border: none; color: var(--accent); font-size: 1rem; font-weight: 700; width: 32px; height: 32px; cursor: pointer; transition: background 0.15s; display: grid; place-items: center; flex-shrink: 0; }
-  .counter-btn:hover { background: var(--accent-light); }
-  .counter-num { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--text); width: 46px; text-align: center; background: #fff; border: none; outline: none; padding: 4px 0; }
-  .counter-num::-webkit-outer-spin-button, .counter-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .counter-num[type=number] { -moz-appearance: textfield; }
-  .task-result { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); }
-  .task-mins { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--accent); }
-  .task-hrs { font-size: 0.68rem; color: var(--muted); margin-top: 2px; font-weight: 500; }
-  .task-bar { height: 3px; background: var(--border); border-radius: 99px; margin-top: 10px; overflow: hidden; }
-  .task-bar-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.4s ease; }
+  /* ── Progress ── */
+  .progress-section{margin-bottom:20px;}
+  .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .progress-title{font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .progress-pct{font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;}
+  .progress-track{height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:99px;transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1),background 0.3s;}
+  .progress-fill.ok{background:linear-gradient(90deg,#6366f1,#818cf8);}
+  .progress-fill.warn{background:linear-gradient(90deg,#d97706,#f59e0b);}
+  .progress-fill.over{background:linear-gradient(90deg,#dc2626,#ef4444);}
 
-  /* Auto-fill card (Inspection Review) */
-  .auto-card { border-color: #c7d2fe; background: linear-gradient(135deg, #fff, #f5f3ff); }
-  .auto-card:hover { border-color: var(--accent); }
-  .auto-card::before { background: linear-gradient(90deg, var(--accent), #a78bfa); opacity: 1; }
-  .auto-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.5px; background: var(--accent-light); color: var(--accent); border: 1px solid #c7d2fe; border-radius: 99px; padding: 2px 8px; vertical-align: middle; margin-left: 6px; }
-  .auto-hint { font-size: 0.68rem; color: var(--accent); background: var(--accent-light); border-radius: 6px; padding: 5px 10px; margin-bottom: 10px; font-weight: 500; }
-  .auto-widget { background: var(--accent-light); border-color: #c7d2fe; justify-content: space-between; padding: 0 10px; height: 34px; cursor: default; }
-  .auto-icon { font-size: 0.9rem; color: var(--accent); }
-  .auto-num { background: transparent; color: var(--accent); font-weight: 700; cursor: default; width: 40px; }
-  .auto-tag { font-size: 0.6rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-  .auto-widget-editable { border-color: #c7d2fe; background: var(--accent-light); margin-bottom: 6px; }
-  .auto-reset-row { display: flex; align-items: center; justify-content: space-between; }
-  .auto-calc-info { font-size: 0.65rem; font-weight: 600; color: var(--accent); }
-  .auto-reset-btn { font-size: 0.62rem; font-weight: 600; background: transparent; border: 1px solid #c7d2fe; color: var(--accent); border-radius: 6px; padding: 3px 10px; cursor: pointer; transition: all 0.15s; }
-  .auto-reset-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* ── Summary ── */
+  .summary-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:20px;box-shadow:var(--shadow-sm);}
+  .sum-item{text-align:center;}
+  .sum-val{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;line-height:1;color:var(--text);}
+  .sum-val.green{color:var(--accent3);} .sum-val.yellow{color:var(--warn);} .sum-val.red{color:var(--accent2);} .sum-val.blue{color:var(--accent);}
+  .sum-lbl{font-size:0.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;font-weight:500;}
+  .status-badge{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:5px 12px;font-size:0.72rem;font-weight:600;}
+  .status-ok{background:var(--accent3-light);color:var(--accent3);border:1px solid #a7f3d0;}
+  .status-warn{background:var(--warn-light);color:var(--warn);border:1px solid #fde68a;}
+  .status-over{background:var(--accent2-light);color:var(--accent2);border:1px solid #fecaca;}
 
-  /* Actions */
-  .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  /* ── Section Title ── */
+  .section-title{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;font-weight:600;}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* History */
-  .history-list { display: flex; flex-direction: column; gap: 8px; }
-  .history-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: var(--shadow-sm); transition: box-shadow 0.15s; }
-  .history-item:hover { box-shadow: var(--shadow); }
-  .history-date { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); }
-  .history-tasks { display: flex; gap: 6px; flex-wrap: wrap; }
-  .history-tag { background: var(--accent-light); color: var(--accent); border-radius: 99px; padding: 2px 10px; font-size: 0.65rem; font-weight: 600; }
-  .history-total { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--accent3); font-weight: 700; }
-  .history-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.9rem; transition: color 0.15s; padding: 2px 6px; border-radius: 4px; }
-  .history-del:hover { color: var(--accent2); background: var(--accent2-light); }
-  .empty-history { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; background: var(--surface); border: 1px dashed var(--border2); border-radius: var(--radius); }
+  /* ── Task Grid ── */
+  .task-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:20px;}
+  .task-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);transition:box-shadow 0.2s,transform 0.15s,border-color 0.2s;position:relative;}
+  .task-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--border2);}
+  .task-card::before{content:'';position:absolute;top:0;left:16px;right:16px;height:2px;background:var(--accent);border-radius:0 0 3px 3px;opacity:0;transition:opacity 0.2s;}
+  .task-card:hover::before{opacity:1;}
+  .task-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .task-name{font-size:0.9rem;font-weight:600;color:var(--text);}
+  .task-rate{font-family:'Space Mono',monospace;font-size:0.65rem;background:var(--accent-light);color:var(--accent);border-radius:6px;padding:3px 8px;font-weight:700;flex-shrink:0;}
+  .task-input-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .task-count-label{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:500;white-space:nowrap;}
+  .task-result{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--border);}
+  .task-mins{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--accent);}
+  .task-hrs{font-size:0.68rem;color:var(--muted);margin-top:2px;font-weight:500;}
+  .task-bar{height:3px;background:var(--border);border-radius:99px;margin-top:10px;overflow:hidden;}
+  .task-bar-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.4s ease;}
 
-  /* Bottom Bar */
-  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--border); z-index: 100; box-shadow: 0 -4px 24px rgba(0,0,0,0.06); }
-  .bottom-bar-inner { max-width: 960px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .bottom-left { min-width: 110px; }
-  .bottom-label { font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; font-weight: 500; }
-  .countdown { font-family: 'Space Mono', monospace; font-size: 1.6rem; font-weight: 700; line-height: 1; }
-  .countdown.ok   { color: var(--accent3); }
-  .countdown.warn { color: var(--warn); }
-  .countdown.over { color: var(--accent2); }
-  .bottom-divider { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
-  .bottom-stat { text-align: center; }
-  .bottom-stat-val { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; color: var(--text); }
-  .bottom-stat-lbl { font-size: 0.56rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; font-weight: 500; }
-  .bottom-progress-wrap { flex: 1; min-width: 130px; }
-  .bottom-progress-label { font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
-  .bottom-progress-track { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .bottom-progress-fill { height: 100%; border-radius: 99px; transition: width 1s linear, background 0.3s; }
-  .bottom-progress-fill.ok   { background: linear-gradient(90deg, #6366f1, #818cf8); }
-  .bottom-progress-fill.warn { background: linear-gradient(90deg, #d97706, #f59e0b); }
-  .bottom-progress-fill.over { background: linear-gradient(90deg, #dc2626, #ef4444); }
+  /* ── Input Styles ── */
+  /* Plus/Minus */
+  .counter-widget{display:flex;align-items:center;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+  .counter-btn{background:var(--surface2);border:none;color:var(--accent);font-size:1rem;font-weight:700;width:32px;height:32px;cursor:pointer;transition:background 0.15s;display:grid;place-items:center;flex-shrink:0;}
+  .counter-btn:hover{background:var(--accent-light);}
+  .counter-num{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--text);width:46px;text-align:center;background:#fff;border:none;outline:none;padding:4px 0;}
+  .counter-num::-webkit-outer-spin-button,.counter-num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .counter-num[type=number]{-moz-appearance:textfield;}
 
-  /* Toast */
-  .toast { position: fixed; bottom: 80px; right: 24px; background: var(--text); color: #fff; border-radius: 10px; padding: 12px 20px; font-size: 0.8rem; font-weight: 500; z-index: 1000; transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow: var(--shadow-lg); }
-  .toast.show { transform: translateY(0); opacity: 1; }
+  /* Plain input */
+  .plain-input{font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--text);width:90px;background:#fff;border:2px solid var(--border);border-radius:8px;padding:5px 10px;text-align:center;outline:none;transition:border-color 0.15s;}
+  .plain-input:focus{border-color:var(--accent);}
+  .plain-input::-webkit-outer-spin-button,.plain-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+  .plain-input[type=number]{-moz-appearance:textfield;}
 
-  @media (max-width: 600px) {
-    .clock-time { font-size: 1.2rem; }
-    .countdown { font-size: 1.2rem; }
-    .bottom-divider { display: none; }
-    .bottom-bar-inner { gap: 12px; }
-    .sum-val { font-size: 1.1rem; }
+  /* Slider */
+  .slider-wrap{width:100%;}
+  .slider-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+  .slider-val{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--accent);}
+  input[type=range].task-slider{-webkit-appearance:none;width:100%;height:6px;background:var(--border);border-radius:99px;outline:none;cursor:pointer;}
+  input[type=range].task-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 2px 6px rgba(99,102,241,0.35);}
+  input[type=range].task-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none;}
+  .slider-minmax{display:flex;justify-content:space-between;font-size:0.58rem;color:var(--muted);margin-top:3px;}
+
+  /* Dropdown */
+  .task-select{font-family:'Space Mono',monospace;font-size:0.95rem;font-weight:700;color:var(--text);background:#fff;border:2px solid var(--border);border-radius:8px;padding:5px 30px 5px 12px;outline:none;cursor:pointer;transition:border-color 0.15s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236366f1' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+  .task-select:focus{border-color:var(--accent);}
+
+  /* Tap */
+  .tap-wrap{display:flex;align-items:center;gap:10px;}
+  .tap-btn{background:var(--accent-light);border:2px solid #c7d2fe;border-radius:12px;padding:8px 16px;cursor:pointer;text-align:center;transition:all 0.12s;user-select:none;}
+  .tap-btn:hover{background:var(--accent);border-color:var(--accent);}
+  .tap-btn:hover .tap-count,.tap-btn:hover .tap-hint{color:#fff;}
+  .tap-btn:active{transform:scale(0.94);}
+  .tap-count{font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);line-height:1;}
+  .tap-hint{font-size:0.55rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:1px;}
+  .tap-reset-btn{font-size:0.65rem;color:var(--muted);background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all 0.15s;}
+  .tap-reset-btn:hover{color:var(--accent2);border-color:#fecaca;background:var(--accent2-light);}
+
+  /* ── Auto card (Inspection Review) ── */
+  .auto-card{border-color:#c7d2fe;background:linear-gradient(135deg,#fff,#f5f3ff);}
+  .auto-card::before{background:linear-gradient(90deg,var(--accent),#a78bfa);opacity:1;}
+  .auto-badge{font-size:0.58rem;font-weight:700;background:var(--accent-light);color:var(--accent);border:1px solid #c7d2fe;border-radius:99px;padding:2px 8px;vertical-align:middle;margin-left:6px;}
+  .auto-hint{font-size:0.68rem;color:var(--accent);background:var(--accent-light);border-radius:6px;padding:5px 10px;margin-bottom:10px;font-weight:500;}
+  .auto-widget-editable{border-color:#c7d2fe;background:var(--accent-light);margin-bottom:6px;}
+  .auto-reset-row{display:flex;align-items:center;justify-content:space-between;}
+  .auto-calc-info{font-size:0.65rem;font-weight:600;color:var(--accent);}
+  .auto-reset-btn{font-size:0.62rem;font-weight:600;background:transparent;border:1px solid #c7d2fe;color:var(--accent);border-radius:6px;padding:3px 10px;cursor:pointer;transition:all 0.15s;}
+  .auto-reset-btn:hover{background:var(--accent);color:#fff;}
+
+  /* ── Action row ── */
+  .action-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+
+  /* ── History ── */
+  .history-list{display:flex;flex-direction:column;gap:8px;}
+  .history-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:var(--shadow-sm);transition:box-shadow 0.15s;}
+  .history-item:hover{box-shadow:var(--shadow);}
+  .history-date{font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);}
+  .history-tasks{display:flex;gap:6px;flex-wrap:wrap;}
+  .history-tag{background:var(--accent-light);color:var(--accent);border-radius:99px;padding:2px 10px;font-size:0.65rem;font-weight:600;}
+  .history-total{font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent3);font-weight:700;}
+  .history-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:2px 6px;border-radius:4px;transition:all 0.15s;}
+  .history-del:hover{color:var(--accent2);background:var(--accent2-light);}
+  .empty-history{text-align:center;color:var(--muted);font-size:0.8rem;padding:32px;background:var(--surface);border:1px dashed var(--border2);border-radius:var(--radius);}
+
+  /* ── Toast ── */
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;border-radius:10px;padding:12px 20px;font-size:0.8rem;font-weight:500;z-index:300;transform:translateY(20px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:var(--shadow-lg);}
+  .toast.show{transform:translateY(0);opacity:1;}
+
+  /* Task Duration Settings */
+  .task-duration-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; background:var(--surface2); transition:border-color 0.15s; }
+  .task-duration-row:hover { border-color:var(--border2); }
+  .task-duration-name { font-size:0.82rem; font-weight:600; color:var(--text2); flex:1; }
+  .task-duration-input-wrap { display:flex; align-items:center; gap:6px; }
+  .task-duration-input { font-family:'Space Mono',monospace; font-size:0.9rem; font-weight:700; color:var(--accent); width:56px; text-align:center; background:#fff; border:2px solid var(--border); border-radius:8px; padding:4px 6px; outline:none; transition:border-color 0.15s; }
+  .task-duration-input:focus { border-color:var(--accent); }
+  .task-duration-input::-webkit-outer-spin-button,.task-duration-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+  .task-duration-input[type=number]{-moz-appearance:textfield;}
+  .task-duration-unit { font-size:0.68rem; color:var(--muted); font-weight:500; }
+  .duration-reset-btn { font-size:0.65rem; font-weight:600; background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:6px; padding:4px 10px; cursor:pointer; transition:all 0.15s; margin-top:10px; width:100%; }
+  .duration-reset-btn:hover { background:var(--accent2-light); color:var(--accent2); border-color:#fecaca; }
+
+  @media(max-width:600px){
+    .clock-time{font-size:1.2rem;}
+    .settings-drawer{width:100%;max-width:100%;}
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Header -->
   <header>
     <div class="brand">
       <div class="brand-icon">⏱</div>
@@ -195,32 +216,16 @@
         <div class="subtitle">Daily Work Time Monitor</div>
       </div>
     </div>
-    <div class="shift-clock">
-      <div class="clock-time" id="liveClock">--:--:--</div>
-      <div class="clock-label">Current Time</div>
+    <div class="header-right">
+      <div>
+        <div class="clock-time" id="liveClock">--:--:--</div>
+        <div class="clock-label">Current Time</div>
+      </div>
+      <div class="settings-btn" onclick="openSettings()" title="Settings">⚙️</div>
     </div>
   </header>
 
-  <div class="shift-panel">
-    <div class="shift-left">
-      <div class="shift-stats">
-        <div class="stat"><div class="stat-val" id="statElapsed">0m</div><div class="stat-lbl">Elapsed</div></div>
-        <div class="stat"><div class="stat-val" id="statRemain">420m</div><div class="stat-lbl">Remaining</div></div>
-        <div class="stat"><div class="stat-val" id="statPct">0%</div><div class="stat-lbl">Used</div></div>
-      </div>
-    </div>
-    <div>
-      <div class="start-row">
-        <label>Shift Start:</label>
-        <input type="time" class="time-input" id="shiftStart" value="09:00"/>
-      </div>
-      <div class="shift-actions">
-        <button class="btn btn-primary" id="btnStart" onclick="startShift()">▶ Start Shift</button>
-        <button class="btn btn-danger" id="btnReset" onclick="resetShift()" style="display:none">↺ Reset</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- Progress -->
   <div class="progress-section">
     <div class="progress-header">
       <div class="progress-title">Task Load vs Shift Capacity (420 mins)</div>
@@ -231,6 +236,7 @@
     </div>
   </div>
 
+  <!-- Summary -->
   <div class="summary-panel">
     <div class="sum-item"><div class="sum-val blue" id="sumTasks">0</div><div class="sum-lbl">Total Tasks</div></div>
     <div class="sum-item"><div class="sum-val blue" id="sumMins">0</div><div class="sum-lbl">Total Mins</div></div>
@@ -242,54 +248,248 @@
     </div>
   </div>
 
+  <!-- Tasks -->
   <div class="section-title">Task Breakdown</div>
   <div class="task-grid" id="taskGrid"></div>
 
+  <!-- Actions -->
   <div class="action-row">
     <button class="btn btn-success" onclick="saveToday()">💾 Save Today's Record</button>
     <button class="btn btn-secondary" onclick="exportCSV()">⬇ Export CSV</button>
     <button class="btn btn-secondary" onclick="resetTasks()">✕ Clear Counts</button>
   </div>
 
+  <!-- History -->
   <div class="section-title">Saved Records</div>
   <div class="history-list" id="historyList"></div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- Settings Overlay -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
 
-<div class="bottom-bar">
-  <div class="bottom-bar-inner">
-    <div class="bottom-left">
-      <div class="bottom-label">Shift Countdown</div>
-      <div class="countdown ok" id="countdown">7:00:00</div>
-    </div>
-    <div class="bottom-divider"></div>
-    <div class="bottom-stat"><div class="bottom-stat-val" id="bottomElapsed">0m</div><div class="bottom-stat-lbl">Elapsed</div></div>
-    <div class="bottom-stat"><div class="bottom-stat-val" id="bottomRemain">420m</div><div class="bottom-stat-lbl">Remaining</div></div>
-    <div class="bottom-stat"><div class="bottom-stat-val" id="bottomPct">0%</div><div class="bottom-stat-lbl">Shift Used</div></div>
-    <div class="bottom-divider"></div>
-    <div class="bottom-progress-wrap">
-      <div class="bottom-progress-label">Shift Progress</div>
-      <div class="bottom-progress-track">
-        <div class="bottom-progress-fill ok" id="bottomProgressFill" style="width:0%"></div>
+<!-- Settings Drawer -->
+<div class="settings-drawer" id="settingsDrawer">
+  <div class="settings-header">
+    <div class="settings-title">⚙️ Settings</div>
+    <div class="settings-close" onclick="closeSettings()">✕</div>
+  </div>
+  <div class="settings-body">
+
+    <div class="settings-section">
+      <div class="settings-section-title">Input Style</div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Choose how you enter task counts. Changes apply instantly.</p>
+
+      <div class="style-option active" id="opt-pm" onclick="setInputStyle('pm')">
+        <div class="style-option-icon">➕</div>
+        <div class="style-option-info">
+          <div class="style-option-name">Plus / Minus Buttons</div>
+          <div class="style-option-desc">Classic − and + counter. Quick tap adjustments.</div>
+        </div>
+        <div class="style-option-check" id="chk-pm">✓</div>
+      </div>
+
+      <div class="style-option" id="opt-plain" onclick="setInputStyle('plain')">
+        <div class="style-option-icon">🔢</div>
+        <div class="style-option-info">
+          <div class="style-option-name">Plain Number Input</div>
+          <div class="style-option-desc">Just type the number directly. Fast and clean.</div>
+        </div>
+        <div class="style-option-check" id="chk-plain"></div>
+      </div>
+
+      <div class="style-option" id="opt-slider" onclick="setInputStyle('slider')">
+        <div class="style-option-icon">🎚️</div>
+        <div class="style-option-info">
+          <div class="style-option-name">Slider</div>
+          <div class="style-option-desc">Drag left/right to set count. Great on touch screens.</div>
+        </div>
+        <div class="style-option-check" id="chk-slider"></div>
+      </div>
+
+      <div class="style-option" id="opt-dropdown" onclick="setInputStyle('dropdown')">
+        <div class="style-option-icon">🔽</div>
+        <div class="style-option-info">
+          <div class="style-option-name">Dropdown</div>
+          <div class="style-option-desc">Pick from a list. No accidental wrong values.</div>
+        </div>
+        <div class="style-option-check" id="chk-dropdown"></div>
+      </div>
+
+      <div class="style-option" id="opt-tap" onclick="setInputStyle('tap')">
+        <div class="style-option-icon">⭕</div>
+        <div class="style-option-info">
+          <div class="style-option-name">Tap to Increment</div>
+          <div class="style-option-desc">Tap the card to add 1. Reset button to clear.</div>
+        </div>
+        <div class="style-option-check" id="chk-tap"></div>
       </div>
     </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">⏱ Task Duration (mins per task)</div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;">Set how many minutes each task takes. Updates recalculate instantly.</p>
+      <div id="taskDurationSettings"></div>
+      <button class="duration-reset-btn" onclick="resetDurations()">↺ Reset All to Default</button>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">About</div>
+      <div class="settings-info">
+        <strong>ShiftTrack</strong> — Daily Work Time Monitor<br/>
+        7-hour shift · 6 tasks · Auto-calculates Inspection Reviews<br/>
+        Settings are saved automatically 💾
+      </div>
+    </div>
+
   </div>
 </div>
 
-<script>
-const TASKS = [
-  { id: 'email',      name: 'Email Follow-Up',   mins: 4  },
-  { id: 'bms',        name: 'BMS Follow-Up',      mins: 3  },
-  { id: 'indexing',   name: 'Indexing',            mins: 3  },
-  { id: 'processing', name: 'Processing',          mins: 5  },
-  { id: 'reccomp',    name: 'Rec Comp',            mins: 5  },
-  { id: 'inspection', name: 'Inspection Review',   mins: 18 },
-];
-const SHIFT_MINS = 420, SHIFT_SECS = SHIFT_MINS * 60;
-let counts = {}; TASKS.forEach(t => counts[t.id] = 0);
-let shiftTimer = null, shiftRunning = false, shiftEndTime = null;
+<div class="toast" id="toast"></div>
 
+<script>
+const DEFAULT_MINS = { email:4, bms:3, indexing:3, processing:5, reccomp:5, inspection:18 };
+const TASKS = [
+  { id:'email',      name:'Email Follow-Up',   mins:4  },
+  { id:'bms',        name:'BMS Follow-Up',      mins:3  },
+  { id:'indexing',   name:'Indexing',            mins:3  },
+  { id:'processing', name:'Processing',          mins:5  },
+  { id:'reccomp',    name:'Rec Comp',            mins:5  },
+  { id:'inspection', name:'Inspection Review',   mins:18 },
+];
+const SHIFT_MINS = 420;
+let counts = {}; TASKS.forEach(t => counts[t.id] = 0);
+let inspAutoValue = 0, inspManualOverride = false;
+
+// Load saved durations
+function loadSavedDurations() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('st_durations') || '{}');
+    TASKS.forEach(t => {
+      if (saved[t.id] && saved[t.id] > 0) t.mins = saved[t.id];
+    });
+  } catch(e) {}
+}
+
+function saveDurations() {
+  const d = {};
+  TASKS.forEach(t => d[t.id] = t.mins);
+  localStorage.setItem('st_durations', JSON.stringify(d));
+}
+
+function buildDurationSettings() {
+  const container = document.getElementById('taskDurationSettings');
+  if (!container) return;
+  container.innerHTML = TASKS.map(t => `
+    <div class="task-duration-row">
+      <div class="task-duration-name">${t.name}</div>
+      <div class="task-duration-input-wrap">
+        <input type="number" class="task-duration-input" id="dur_${t.id}"
+          value="${t.mins}" min="1" max="120"
+          oninput="updateDuration('${t.id}', this.value)"/>
+        <span class="task-duration-unit">min</span>
+      </div>
+    </div>`).join('');
+}
+
+function updateDuration(id, val) {
+  const mins = Math.max(1, parseInt(val) || 1);
+  const task = TASKS.find(t => t.id === id);
+  if (!task) return;
+  task.mins = mins;
+  saveDurations();
+  // Update the rate badge on the task card
+  const rateEl = document.querySelector(`#taskGrid .task-card:nth-child(${TASKS.indexOf(task)+1}) .task-rate`);
+  if (rateEl) rateEl.textContent = mins + ' min/task';
+  // Rebuild cards to update max/shift
+  buildCards();
+  inspManualOverride = false;
+  recalc();
+}
+
+function resetDurations() {
+  TASKS.forEach(t => { t.mins = DEFAULT_MINS[t.id]; });
+  localStorage.removeItem('st_durations');
+  buildDurationSettings();
+  buildCards();
+  inspManualOverride = false;
+  recalc();
+  showToast('↺ Durations reset to defaults!');
+}
+
+// ── Load saved input style ────────────────────────────────────────────────
+let inputStyle = localStorage.getItem('st_inputStyle') || 'pm';
+
+// ── Settings panel ────────────────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('settingsOverlay').classList.add('open');
+  document.getElementById('settingsDrawer').classList.add('open');
+  buildDurationSettings();
+}
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('open');
+  document.getElementById('settingsDrawer').classList.remove('open');
+}
+function setInputStyle(style) {
+  inputStyle = style;
+  localStorage.setItem('st_inputStyle', style);
+  // Update checkmarks
+  ['pm','plain','slider','dropdown','tap'].forEach(s => {
+    document.getElementById('opt-' + s).classList.toggle('active', s === style);
+    document.getElementById('chk-' + s).textContent = s === style ? '✓' : '';
+  });
+  buildCards();
+  recalc();
+  showToast('✅ Input style updated!');
+}
+
+// ── Build task input based on current style ────────────────────────────────
+function buildInput(t) {
+  const id = `inp_${t.id}`;
+  const val = counts[t.id] || 0;
+  const max = Math.floor(SHIFT_MINS / t.mins);
+
+  if (inputStyle === 'pm') return `
+    <div class="counter-widget">
+      <button class="counter-btn" onclick="setCount('${t.id}', (counts['${t.id}']||0)-1)">−</button>
+      <input type="number" class="counter-num" id="${id}" value="${val}" min="0" max="${max}" oninput="setCount('${t.id}',+this.value)"/>
+      <button class="counter-btn" onclick="setCount('${t.id}', (counts['${t.id}']||0)+1)">+</button>
+    </div>`;
+
+  if (inputStyle === 'plain') return `
+    <input type="number" class="plain-input" id="${id}" value="${val}" min="0" max="${max}" placeholder="0" oninput="setCount('${t.id}',+this.value)"/>`;
+
+  if (inputStyle === 'slider') return `
+    <div class="slider-wrap">
+      <div class="slider-top">
+        <span style="font-size:0.68rem;color:var(--muted);font-weight:500;">Count</span>
+        <span class="slider-val" id="sv_${t.id}">${val}</span>
+      </div>
+      <input type="range" class="task-slider" id="${id}" min="0" max="${max}" value="${val}"
+        oninput="setCount('${t.id}',+this.value);document.getElementById('sv_${t.id}').textContent=this.value"/>
+      <div class="slider-minmax"><span>0</span><span>${max}</span></div>
+    </div>`;
+
+  if (inputStyle === 'dropdown') {
+    const opts = [0,1,2,3,4,5,6,7,8,9,10,12,15,20,25,30,40,50,60,80,100].filter(n=>n<=max+5);
+    return `<select class="task-select" id="${id}" onchange="setCount('${t.id}',+this.value)">
+      ${opts.map(n=>`<option value="${n}"${n===val?' selected':''}>${n}</option>`).join('')}
+    </select>`;
+  }
+
+  if (inputStyle === 'tap') return `
+    <div class="tap-wrap">
+      <div class="tap-btn" onclick="setCount('${t.id}',(counts['${t.id}']||0)+1)">
+        <div class="tap-count" id="${id}_display">${val}</div>
+        <div class="tap-hint">Tap +1</div>
+      </div>
+      <input type="hidden" id="${id}" value="${val}"/>
+      <button class="tap-reset-btn" onclick="setCount('${t.id}',0)">Reset</button>
+    </div>`;
+
+  return '';
+}
+
+// ── Build cards ───────────────────────────────────────────────────────────
 function buildCards() {
   const grid = document.getElementById('taskGrid');
   grid.innerHTML = '';
@@ -297,29 +497,26 @@ function buildCards() {
     const isAuto = t.id === 'inspection';
     const card = document.createElement('div');
     card.className = 'task-card' + (isAuto ? ' auto-card' : '');
-    const inputBlock = isAuto
-      ? `<div style="width:100%">
-           <div class="counter-widget auto-widget-editable">
-             <button class="counter-btn" onclick="adjustInspection(-1)">−</button>
-             <input type="number" class="counter-num" id="inp_${t.id}" value="0" min="0" max="999" oninput="onInspectionInput(this.value)"/>
-             <button class="counter-btn" onclick="adjustInspection(1)">+</button>
-           </div>
-           <div class="auto-reset-row">
-             <span class="auto-calc-info" id="autoCalcInfo">⚙ Auto: 0 tasks</span>
-             <button class="auto-reset-btn" onclick="resetInspectionToAuto()" title="Reset to auto-calculated value">↺ Reset to Auto</button>
-           </div>
-         </div>`
-      : `<div class="counter-widget">
-           <button class="counter-btn" onclick="adjust('${t.id}',-1)">−</button>
-           <input type="number" class="counter-num" id="inp_${t.id}" value="0" min="0" max="999" oninput="onInput('${t.id}',this.value)"/>
-           <button class="counter-btn" onclick="adjust('${t.id}',1)">+</button>
-         </div>`;
+
+    const inputBlock = isAuto ? `
+      <div style="width:100%">
+        <div class="counter-widget auto-widget-editable" style="margin-bottom:6px">
+          <button class="counter-btn" onclick="adjustInspection(-1)">−</button>
+          <input type="number" class="counter-num" id="inp_${t.id}" value="0" min="0" oninput="onInspectionInput(this.value)"/>
+          <button class="counter-btn" onclick="adjustInspection(1)">+</button>
+        </div>
+        <div class="auto-reset-row">
+          <span class="auto-calc-info" id="autoCalcInfo">⚙ Auto: 0 tasks</span>
+          <button class="auto-reset-btn" onclick="resetInspectionToAuto()">↺ Reset to Auto</button>
+        </div>
+      </div>` : buildInput(t);
+
     card.innerHTML = `
       <div class="task-top">
-        <div class="task-name">${t.name}${isAuto ? ' <span class="auto-badge">Auto-fill</span>' : ''}</div>
+        <div class="task-name">${t.name}${isAuto?` <span class="auto-badge">Auto-fill</span>`:''}</div>
         <div class="task-rate">${t.mins} min/task</div>
       </div>
-      ${isAuto ? '<div class="auto-hint">⚡ Calculates how many reviews fit in the remaining shift time</div>' : ''}
+      ${isAuto?'<div class="auto-hint">⚡ Fills remaining shift time — adjustable manually</div>':''}
       <div class="task-input-row">
         <div class="task-count-label">Tasks:</div>
         ${inputBlock}
@@ -338,70 +535,60 @@ function buildCards() {
   });
 }
 
-function fmtHrMin(m) { return `${Math.floor(m/60)}hr ${m%60}min`; }
+// ── Set count (universal) ─────────────────────────────────────────────────
+function setCount(id, val) {
+  counts[id] = Math.max(0, Math.floor(+val) || 0);
+  const inp = document.getElementById('inp_' + id);
+  if (inp) inp.value = counts[id];
+  // update tap display if tap style
+  const tapDisplay = document.getElementById('inp_' + id + '_display');
+  if (tapDisplay) tapDisplay.textContent = counts[id];
+  recalc();
+}
 
-function adjust(id, delta) { counts[id] = Math.max(0,(counts[id]||0)+delta); document.getElementById('inp_'+id).value=counts[id]; recalc(); }
-function onInput(id, val) { counts[id] = Math.max(0,parseInt(val)||0); recalc(); }
-
+// ── Inspection specific ───────────────────────────────────────────────────
 function adjustInspection(delta) {
   inspManualOverride = true;
   counts['inspection'] = Math.max(0, (counts['inspection'] || 0) + delta);
   document.getElementById('inp_inspection').value = counts['inspection'];
   recalc();
 }
-
 function onInspectionInput(val) {
   inspManualOverride = true;
   counts['inspection'] = Math.max(0, parseInt(val) || 0);
   recalc();
 }
-
 function resetInspectionToAuto() {
   inspManualOverride = false;
   recalc();
 }
 
-// Track auto value and whether user has manually overridden
-let inspAutoValue = 0;
-let inspManualOverride = false;
+// ── Recalculate ───────────────────────────────────────────────────────────
+function fmtHrMin(m) { return `${Math.floor(m/60)}hr ${m%60}min`; }
 
 function recalc() {
-  // Calculate mins used by the 5 manual tasks (exclude inspection)
-  let manualMins = 0, manualTasks = 0;
-  TASKS.filter(t => t.id !== 'inspection').forEach(t => {
-    const c = counts[t.id] || 0;
-    manualMins += c * t.mins;
-    manualTasks += c;
-  });
-
-  // Auto-calculate Inspection Review count from remaining time
-  const inspTask = TASKS.find(t => t.id === 'inspection');
+  let manualMins = 0;
+  TASKS.filter(t => t.id !== 'inspection').forEach(t => { manualMins += (counts[t.id]||0) * t.mins; });
   const remainingMins = Math.max(0, SHIFT_MINS - manualMins);
-  inspAutoValue = Math.floor(remainingMins / inspTask.mins);
-
-  // Only auto-set if user hasn't manually overridden
+  inspAutoValue = Math.floor(remainingMins / 18);
   if (!inspManualOverride) {
     counts['inspection'] = inspAutoValue;
-    document.getElementById('inp_inspection').value = inspAutoValue;
+    const el = document.getElementById('inp_inspection');
+    if (el) el.value = inspAutoValue;
   }
-
-  // Update the auto-info label
   const infoEl = document.getElementById('autoCalcInfo');
   if (infoEl) {
-    infoEl.textContent = inspManualOverride
-      ? `⚙ Auto: ${inspAutoValue} tasks (overridden)`
-      : `⚙ Auto: ${inspAutoValue} tasks`;
+    infoEl.textContent = inspManualOverride ? `⚙ Auto: ${inspAutoValue} tasks (overridden)` : `⚙ Auto: ${inspAutoValue} tasks`;
     infoEl.style.color = inspManualOverride ? 'var(--warn)' : 'var(--accent)';
   }
 
-  // Now compute totals including auto inspection
   let totalMins = 0, totalTasks = 0;
   TASKS.forEach(t => {
-    const c = counts[t.id] || 0, m = c * t.mins;
+    const c = counts[t.id]||0, m = c * t.mins;
     totalMins += m; totalTasks += c;
-    document.getElementById('res_mins_'+t.id).textContent = m + ' mins';
-    document.getElementById('res_hrs_'+t.id).textContent = fmtHrMin(m);
-    document.getElementById('bar_'+t.id).style.width = Math.min(100,(m/SHIFT_MINS)*100) + '%';
+    const rm = document.getElementById('res_mins_'+t.id); if(rm) rm.textContent = m+' mins';
+    const rh = document.getElementById('res_hrs_'+t.id);  if(rh) rh.textContent = fmtHrMin(m);
+    const br = document.getElementById('bar_'+t.id);      if(br) br.style.width = Math.min(100,(m/SHIFT_MINS)*100)+'%';
   });
 
   const free = SHIFT_MINS - totalMins, pct = (totalMins / SHIFT_MINS) * 100;
@@ -409,69 +596,27 @@ function recalc() {
   document.getElementById('sumMins').textContent = totalMins;
   document.getElementById('sumHrs').textContent = fmtHrMin(totalMins);
   document.getElementById('sumFree').textContent = Math.max(0, free);
-  document.getElementById('sumFree').className = 'sum-val ' + (free < 0 ? 'red' : free < 60 ? 'yellow' : 'green');
+  document.getElementById('sumFree').className = 'sum-val '+(free<0?'red':free<60?'yellow':'green');
   const prog = document.getElementById('taskProgress'), pctEl = document.getElementById('taskPct');
-  prog.style.width = Math.min(100,pct) + '%';
-  prog.className = 'progress-fill ' + (pct > 100 ? 'over' : pct > 85 ? 'warn' : 'ok');
-  pctEl.textContent = pct.toFixed(1) + '%';
-  pctEl.style.color = pct > 100 ? 'var(--accent2)' : pct > 85 ? 'var(--warn)' : 'var(--accent3)';
+  prog.style.width = Math.min(100,pct)+'%';
+  prog.className = 'progress-fill '+(pct>100?'over':pct>85?'warn':'ok');
+  pctEl.textContent = pct.toFixed(1)+'%';
+  pctEl.style.color = pct>100?'var(--accent2)':pct>85?'var(--warn)':'var(--accent3)';
   const sb = document.getElementById('sumStatus');
-  if(pct > 100){sb.className='status-badge status-over';sb.textContent='🔴 Exceeds Shift';}
-  else if(pct > 85){sb.className='status-badge status-warn';sb.textContent='⚠ Near Limit';}
+  if(pct>100){sb.className='status-badge status-over';sb.textContent='🔴 Exceeds Shift';}
+  else if(pct>85){sb.className='status-badge status-warn';sb.textContent='⚠ Near Limit';}
   else{sb.className='status-badge status-ok';sb.textContent='✅ On Track';}
 }
 
-function startShift() {
-  if(shiftRunning)return;
-  const [h,m]=document.getElementById('shiftStart').value.split(':').map(Number);
-  const start=new Date(); start.setHours(h,m,0,0);
-  shiftEndTime=new Date(start.getTime()+SHIFT_SECS*1000);
-  shiftRunning=true;
-  document.getElementById('btnStart').style.display='none';
-  document.getElementById('btnReset').style.display='';
-  document.getElementById('shiftStart').disabled=true;
-  tickShift(); shiftTimer=setInterval(tickShift,1000);
-  showToast('Shift started! ▶');
-}
-
-function tickShift() {
-  const now=new Date(), remaining=Math.max(0,Math.round((shiftEndTime-now)/1000)), elapsed=SHIFT_SECS-remaining;
-  const fmt=n=>String(n).padStart(2,'0');
-  const cd=document.getElementById('countdown');
-  cd.textContent=`${fmt(Math.floor(remaining/3600))}:${fmt(Math.floor((remaining%3600)/60))}:${fmt(remaining%60)}`;
-  const pct=elapsed/SHIFT_SECS, cls=remaining===0?'over':pct>0.85?'warn':'ok';
-  cd.className='countdown '+cls;
-  document.getElementById('statElapsed').textContent=Math.round(elapsed/60)+'m';
-  document.getElementById('statRemain').textContent=Math.round(remaining/60)+'m';
-  document.getElementById('statPct').textContent=(pct*100).toFixed(0)+'%';
-  document.getElementById('bottomElapsed').textContent=Math.round(elapsed/60)+'m';
-  document.getElementById('bottomRemain').textContent=Math.round(remaining/60)+'m';
-  document.getElementById('bottomPct').textContent=(pct*100).toFixed(0)+'%';
-  const fill=document.getElementById('bottomProgressFill');
-  fill.style.width=Math.min(100,pct*100).toFixed(1)+'%';
-  fill.className='bottom-progress-fill '+cls;
-  if(remaining===0){clearInterval(shiftTimer);showToast('⏰ Shift complete!');}
-}
-
-function resetShift() {
-  clearInterval(shiftTimer); shiftRunning=false; shiftEndTime=null;
-  document.getElementById('countdown').textContent='7:00:00';
-  document.getElementById('countdown').className='countdown ok';
-  ['statElapsed','statRemain','statPct','bottomElapsed','bottomRemain','bottomPct'].forEach((id,i)=>{
-    document.getElementById(id).textContent=['0m','420m','0%','0m','420m','0%'][i];
-  });
-  document.getElementById('btnStart').style.display='';
-  document.getElementById('btnReset').style.display='none';
-  document.getElementById('shiftStart').disabled=false;
-}
-
-function tickClock() {
+// ── Clock ─────────────────────────────────────────────────────────────────
+function tickClock(){
   const now=new Date();
   document.getElementById('liveClock').textContent=[now.getHours(),now.getMinutes(),now.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':');
 }
 setInterval(tickClock,1000); tickClock();
 
-function saveToday() {
+// ── Save / Export ─────────────────────────────────────────────────────────
+function saveToday(){
   const now=new Date();
   const dateStr=now.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
   const timeStr=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
@@ -482,11 +627,9 @@ function saveToday() {
   localStorage.setItem('shifttrack_history',JSON.stringify(history.slice(0,30)));
   renderHistory(); showToast('✅ Record saved!');
 }
-
 function getHistory(){try{return JSON.parse(localStorage.getItem('shifttrack_history')||'[]');}catch{return[];}}
-
-function renderHistory() {
-  const list=document.getElementById('historyList'), history=getHistory();
+function renderHistory(){
+  const list=document.getElementById('historyList'),history=getHistory();
   if(!history.length){list.innerHTML='<div class="empty-history">No records yet — save today\'s shift to start tracking.</div>';return;}
   list.innerHTML=history.map((r,i)=>`
     <div class="history-item">
@@ -496,10 +639,8 @@ function renderHistory() {
       <button class="history-del" onclick="deleteRecord(${i})">✕</button>
     </div>`).join('');
 }
-
 function deleteRecord(i){const h=getHistory();h.splice(i,1);localStorage.setItem('shifttrack_history',JSON.stringify(h));renderHistory();}
-
-function exportCSV() {
+function exportCSV(){
   const history=getHistory();
   if(!history.length){showToast('No records to export yet.');return;}
   let csv='Date,Time,'+TASKS.map(t=>t.name).join(',')+',Total Tasks,Total Mins,Total Hours\n';
@@ -508,12 +649,19 @@ function exportCSV() {
   a.href=url;a.download='ShiftTrack_Records.csv';a.click();URL.revokeObjectURL(url);
   showToast('⬇ CSV downloaded!');
 }
+function resetTasks(){
+  TASKS.forEach(t=>{counts[t.id]=0;});
+  inspManualOverride=false;
+  buildCards(); recalc(); showToast('Counts cleared.');
+}
 
-function resetTasks(){TASKS.forEach(t=>{counts[t.id]=0;document.getElementById('inp_'+t.id).value=0;});recalc();showToast('Counts cleared.');}
-
+// ── Toast ─────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
 
+// ── Init ──────────────────────────────────────────────────────────────────
+loadSavedDurations();
+setInputStyle(inputStyle);
 buildCards(); recalc(); renderHistory();
 </script>
 </body>
